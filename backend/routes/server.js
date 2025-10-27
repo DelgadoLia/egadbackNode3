@@ -18,19 +18,15 @@ app.use(express.json());
 
 app.use(cors({
     origin: function(origin, callback) {
-        // permite requests sin origin (por ejemplo, Postman)
-        if (!origin) return callback(null, true);
-
-        if (ALLOWED_ORIGINS.includes(origin)) {
-            return callback(null, true);
-        } else {
-            console.warn("CORS bloqueado para:", origin);
-            return callback(new Error('CORS no permitido'));
-        }
+        if (!origin) return callback(null, true); // Postman o requests sin origin
+        if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+        return callback(new Error('CORS no permitido'));
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    optionsSuccessStatus: 200
+    methods: ['GET','POST','PUT','DELETE','PATCH','OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.options('*', cors());
 
 // Rutas
 app.use("/api", authRoutes);
