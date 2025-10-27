@@ -10,19 +10,23 @@ const ALLOWED_ORIGINS = [
     'http://127.0.0.1:5500',
     'https://DelgadoLia.github.io', // Agregamos el dominio base
     'https://DelgadoLia.github.io/egadfront', // Opcional pero recomendado
-    'https://delgadolia.github.io/egadfrontNode3/'
+    'https://delgadolia.github.io/egadfrontNode3'
 ];
 
 // Middleware para JSON
 app.use(express.json());
 
-// Configurar CORS
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+    origin: function(origin, callback) {
+        // permite requests sin origin (por ejemplo, Postman)
+        if (!origin) return callback(null, true);
+
+        if (ALLOWED_ORIGINS.includes(origin)) {
             return callback(null, true);
+        } else {
+            console.warn("CORS bloqueado para:", origin);
+            return callback(new Error('CORS no permitido'));
         }
-        return callback(new Error('NO PERMITIDO'));
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     optionsSuccessStatus: 200
@@ -37,3 +41,4 @@ app.get("/health", (_req, res) => res.json({ ok: true }));
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
