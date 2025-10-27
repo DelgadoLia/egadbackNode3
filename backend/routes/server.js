@@ -10,7 +10,8 @@ const ALLOWED_ORIGINS = [
     'http://127.0.0.1:5500',
     'https://DelgadoLia.github.io',
     'https://DelgadoLia.github.io/egadfront',
-    'https://delgadolia.github.io/egadfrontNode3'
+    'https://delgadolia.github.io/egadfrontNode3',
+    'https://delgadolia.github.io/egadfrontNode3/'
 ];
 
 // Middleware para JSON
