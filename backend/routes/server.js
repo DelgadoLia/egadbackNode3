@@ -4,18 +4,19 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Aquí agregamos tu dominio de GitHub Pages
+// Dominios permitidos
 const ALLOWED_ORIGINS = [
     'http://localhost:5500',
     'http://127.0.0.1:5500',
-    'https://DelgadoLia.github.io', // Agregamos el dominio base
-    'https://DelgadoLia.github.io/egadfront', // Opcional pero recomendado
+    'https://DelgadoLia.github.io',
+    'https://DelgadoLia.github.io/egadfront',
     'https://delgadolia.github.io/egadfrontNode3'
 ];
 
 // Middleware para JSON
 app.use(express.json());
 
+// Configurar CORS globalmente
 app.use(cors({
     origin: function(origin, callback) {
         if (!origin) return callback(null, true); // Postman o requests sin origin
@@ -26,15 +27,13 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.options('/*', cors());
-
 // Rutas
 app.use("/api", authRoutes);
 
+// Health check
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
 // Iniciar servidor
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
-
